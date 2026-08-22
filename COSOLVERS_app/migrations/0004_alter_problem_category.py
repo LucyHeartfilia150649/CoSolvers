@@ -6,13 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('viable_graph_app', '0003_alter_problem_options_alter_suggestion_options_and_more'),
+        (
+            "COSOLVERS_app",
+            "0003_alter_problem_options_alter_suggestion_options_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='problem',
-            name='category',
-            field=models.CharField(choices=[('WASTE', 'ปริมาณขยะและเศษอาหาร'), ('POLLUTION', 'มลพิษและการใช้พลังงาน'), ('WATER', 'การจัดการน้ำ'), ('APP', 'ระบบแอปพลิเคชันและการสื่อสาร'), ('COMMUNITY', 'การมีส่วนร่วมของชุมชน (ประชาคมจุฬาฯ)'), ('OTHERS', 'อื่นๆ')], default='WASTE', max_length=20),
+            model_name="problem",
+            name="category",
+            field=models.CharField(
+                choices=[
+                    ("WASTE", "ปริมาณขยะและเศษอาหาร"),
+                    ("POLLUTION", "มลพิษและการใช้พลังงาน"),
+                    ("WATER", "การจัดการน้ำ"),
+                    ("APP", "ระบบแอปพลิเคชันและการสื่อสาร"),
+                    ("COMMUNITY", "การมีส่วนร่วมของชุมชน (ประชาคมจุฬาฯ)"),
+                    ("OTHERS", "อื่นๆ"),
+                ],
+                default="WASTE",
+                max_length=20,
+            ),
         ),
     ]

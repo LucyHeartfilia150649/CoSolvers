@@ -9,25 +9,46 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('viable_graph_app', '0005_comment'),
+        ("COSOLVERS_app", "0005_comment"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='comment',
-            name='rating',
+            model_name="comment",
+            name="rating",
         ),
         migrations.CreateModel(
-            name='CommentRating',
+            name="CommentRating",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rating', models.IntegerField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='star_ratings', to='viable_graph_app.comment')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("rating", models.IntegerField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="star_ratings",
+                        to="COSOLVERS_app.comment",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('comment', 'user')},
+                "unique_together": {("comment", "user")},
             },
         ),
     ]
