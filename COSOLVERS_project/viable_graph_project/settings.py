@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "cloudinary_storage",
     "cloudinary",
-    "viable_graph_app",
+    "COSOLVERS_app",
     "django_recaptcha",
     "sendgrid_backend",
 ]
