@@ -1,0 +1,1 @@
+web: python COSOLVERS_project/manage.py migrate && gunicorn COSOLVERS_project.viable_graph_project.wsgi --bind 0.0.0.0:$PORT
