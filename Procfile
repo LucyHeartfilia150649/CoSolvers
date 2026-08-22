@@ -1,1 +1,1 @@
-﻿web: cd COSOLVERS_project && python manage.py migrate && gunicorn viable_graph_project.wsgi
+﻿web: PYTHONPATH=/app/COSOLVERS_project python COSOLVERS_project/manage.py migrate && PYTHONPATH=/app/COSOLVERS_project gunicorn viable_graph_project.wsgi
