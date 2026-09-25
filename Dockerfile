@@ -34,4 +34,4 @@ USER app
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "PYTHONPATH=/app/viable_graph_project python viable_graph_project/manage.py collectstatic --noinput && PYTHONPATH=/app/viable_graph_project gunicorn viable_graph_project.wsgi:application --bind 0.0.0.0:${PORT} --workers ${WEB_CONCURRENCY:-1}"]
+CMD ["sh", "-c", "PYTHONPATH=/app/COSOLVERS_project python /app/COSOLVERS_project/manage.py collectstatic --noinput && gunicorn --chdir /app/COSOLVERS_project viable_graph_project.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${WEB_CONCURRENCY:-1}"]
