@@ -19,6 +19,11 @@ import base64
 import json
 import threading
 
+ALLOWED_SIGNUP_EMAIL_DOMAINS = {
+    "student.chula.ac.th",
+    "chula.ac.th",
+}
+
 
 # 1. หน้าแรกปกติ (เรนเดอร์หน้า home.html)
 def home_view(request):
@@ -184,9 +189,8 @@ def sign_up(request):
         if not student_id or not email or not password or not faculty:
             messages.error(request, "กรุณากรอกข้อมูลทุกช่องให้ครบถ้วน")
             return render(request, "sign_up.html", context)
-        ALLOWED_DOMAINS = ["student.chula.ac.th", "chula.ac.th"]
-        email_domain = email.split("@")[-1].lower()
-        if email_domain not in ALLOWED_DOMAINS:
+        email_domain = email.rsplit("@", 1)[-1].lower()
+        if "@" not in email or email_domain not in ALLOWED_SIGNUP_EMAIL_DOMAINS:
             messages.error(
                 request,
                 "กรุณาใช้อีเมลของจุฬาลงกรณ์มหาวิทยาลัยเท่านั้น (@student.chula.ac.th หรือ @chula.ac.th)",
