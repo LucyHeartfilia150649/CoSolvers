@@ -9,6 +9,9 @@ class UserProfile(models.Model):
     faculty = models.CharField(max_length=200, blank=True)
     photo = models.ImageField(upload_to="profile_photos/", blank=True, null=True)
 
+    class Meta:
+        db_table = "viable_graph_app_userprofile"
+
     def __str__(self):
         return f"{self.user.username}'s profile"
 
@@ -46,10 +49,20 @@ class Problem(models.Model):
     incident_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(upload_to="problem_photos/", blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="PENDING")
+
     reported_by = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
+
+    is_approved = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "viable_graph_app_problem"
 
     def __str__(self):
         return f"[{self.get_status_display()}] {self.title}"
@@ -60,16 +73,19 @@ class Problem(models.Model):
             return []
         return [t.strip() for t in self.tags.split(",") if t.strip()]
 
-    is_approved = models.BooleanField(default=False)
-
 
 class Suggestion(models.Model):
     problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name="suggestions"
+        Problem,
+        on_delete=models.CASCADE,
+        related_name="suggestions",
     )
     suggestion_text = models.TextField()
     votes = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "viable_graph_app_suggestion"
 
     def __str__(self):
         return f"ข้อเสนอแนะสำหรับ: {self.problem.title[:30]}..."
@@ -77,15 +93,24 @@ class Suggestion(models.Model):
 
 class Comment(models.Model):
     problem = models.ForeignKey(
-        Problem, on_delete=models.CASCADE, related_name="comments"
+        Problem,
+        on_delete=models.CASCADE,
+        related_name="comments",
     )
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="replies",
     )
     is_reported = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "viable_graph_app_comment"
 
     def __str__(self):
         return f"{self.author.username}: {self.text[:30]}"
@@ -108,19 +133,23 @@ class Comment(models.Model):
 
 
 class CommentRating(models.Model):
-    """เก็บคะแนนดาวของผู้ใช้แต่ละคนที่ให้กับ comment (รองรับหลายคนให้คะแนนคนละค่า)"""
+    """เก็บคะแนนดาวของผู้ใช้แต่ละคนที่ให้กับ comment"""
 
     comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="star_ratings"
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="star_ratings",
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        db_table = "viable_graph_app_commentrating"
         unique_together = ("comment", "user")
 
     def __str__(self):
         return (
-            f"{self.user.username} ให้ {self.rating} ดาว กับ comment #{self.comment_id}"
+            f"{self.user.username} ให้ {self.rating} ดาว "
+            f"กับ comment #{self.comment_id}"
         )
